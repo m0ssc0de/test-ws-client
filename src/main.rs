@@ -74,13 +74,13 @@ impl Actor for ChatClient {
 
 impl ChatClient {
     fn hb(&self, ctx: &mut Context<Self>) {
-        let s = pmodels::create_large_shirt(String::from("man in black"));
-        let a = pmodels::serialize_shirt(&s);
+        // let s = pmodels::create_large_shirt(String::from("man in black"));
+        // let a = pmodels::serialize_shirt(&s);
         ctx.run_later(Duration::new(1, 0), |act, ctx| {
             act.0
-                // .write(Message::Ping(Bytes::from_static(b"c")))
-                .write(Message::Text(String::from("3q")))
-                // .write(Message::Binary(Bytes::from("123")))
+                // .write(Message::Ping(Bytes::from_static(b"")))
+                // .write(Message::Text(String::from("3q")))
+                .write(Message::Binary(a.into()))
                 .unwrap();
             act.hb(ctx);
 

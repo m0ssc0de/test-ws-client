@@ -24,6 +24,8 @@ pub fn deserialize_shirt(buf: &[u8]) -> Result<items::Shirt, prost::DecodeError>
     items::Shirt::decode(&mut Cursor::new(buf))
 }
 
+pub fn create_query()
+
 #[cfg(test)]
 mod tests {
     use crate::pmodels::*;
