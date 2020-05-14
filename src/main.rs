@@ -76,6 +76,8 @@ impl ChatClient {
     fn hb(&self, ctx: &mut Context<Self>) {
         // let s = pmodels::create_large_shirt(String::from("man in black"));
         // let a = pmodels::serialize_shirt(&s);
+        let mut cm = pmodels::create_query();
+        let a = pmodels::s_client_message(&cm);
         ctx.run_later(Duration::new(1, 0), |act, ctx| {
             act.0
                 // .write(Message::Ping(Bytes::from_static(b"")))
@@ -105,9 +107,21 @@ impl StreamHandler<Result<Frame, WsProtocolError>> for ChatClient {
         match msg {
             Ok(Frame::Text(txt)) => println!("Server: {:?}", txt),
             Ok(Frame::Binary(bin)) => {
-                let bytes = bin.to_vec();
-                let shirt = pmodels::deserialize_shirt(&bytes);
-                println!("Server binary: {:?}", shirt);
+                let m = pmodels::d_client_message(&bin);
+                match m {
+                    Ok(m) => {
+                        println!("Ok(m) m: {:?}", m);
+                        match m.message {
+                            Some(msg) => {
+                                println!("msg {:?}", msg);
+                            }
+                            None => {
+                                println!("got none");
+                            }
+                        }
+                    }
+                    Err(e) => println!("got err {}", e),
+                }
             }
             _ => println!("Nothing"),
         }

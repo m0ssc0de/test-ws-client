@@ -24,7 +24,24 @@ pub fn deserialize_shirt(buf: &[u8]) -> Result<items::Shirt, prost::DecodeError>
     items::Shirt::decode(&mut Cursor::new(buf))
 }
 
-pub fn create_query()
+pub fn create_query() -> items::ClientMessage {
+    let mut cm = items::ClientMessage::default();
+    let q = items::Query::default();
+    let v = items::client_message::Message::Query(q);
+    cm.message = Some(v);
+    cm
+}
+
+pub fn s_client_message(client_message: &items::ClientMessage) -> Vec<u8> {
+    let mut buf = Vec::new();
+    buf.reserve(client_message.encoded_len());
+    client_message.encode(&mut buf).unwrap();
+    buf
+}
+
+pub fn d_client_message(buf: &[u8]) -> Result<items::ClientMessage, prost::DecodeError> {
+    items::ClientMessage::decode(&mut Cursor::new(buf))
+}
 
 #[cfg(test)]
 mod tests {
